@@ -768,7 +768,7 @@
           <input type="text" id="input-name" placeholder="" required autocomplete="name" />
         </div>
         <div class="form-group">
-          <label for="input-phone">WhatsApp (opcional)</label>
+          <label for="input-phone">WhatsApp</label>
           <input type="tel" id="input-phone" placeholder="55..." autocomplete="tel" />
         </div>
         <div class="form-group">
@@ -782,7 +782,10 @@
           <label for="input-companion">Nombre de tu acompañante</label>
           <input type="text" id="input-companion" placeholder="" autocomplete="name" />
         </div>
-
+        <div class="form-group">
+          <label for="input-message">Mensaje para los novios</label>
+          <input type="text" id="input-message" placeholder="" />
+        </div>
         <button type="submit" class="btn-submit" id="btn-submit">
           ¡Confirmar Asistencia!
         </button>
@@ -878,6 +881,7 @@
     const phone   = document.getElementById('input-phone').value.trim();
     const guests  = document.getElementById('input-guests').value;
     const companionName = document.getElementById('input-companion').value.trim();
+    const message = document.getElementById('input-message').value.trim();
     
     if (!name) {
       const inp = document.getElementById('input-name');
@@ -900,7 +904,7 @@
     submitBtn.style.opacity = '0.7';
     submitBtn.disabled = true;
 
-    const data = { name, phone, guests, companionName, timestamp: new Date().toISOString() };
+    const data = { name, phone, guests, companionName, message, timestamp: new Date().toISOString() };
 
     try {
       // 1. Google Sheets Webhook
@@ -917,7 +921,7 @@
       fetch('/api/telegram', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, guests, companionName })
+        body: JSON.stringify({ name, phone, guests, companionName, message })
       }).catch(err => console.log('Telegram backend falló o remoto inactivo'));
     } catch(e) { console.error('Error enviando notificaciones', e); }
     
