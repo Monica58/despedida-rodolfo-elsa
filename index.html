@@ -362,6 +362,62 @@
       margin-top: 20px;
     }
 
+    /* ── COUNTDOWN ── */
+    .countdown-container {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px dashed rgba(255,167,199,0.3);
+      width: 100%;
+      max-width: 400px;
+    }
+    .countdown-title {
+      font-family: 'Konthen', cursive;
+      font-size: 1.8rem;
+      color: var(--pink);
+      text-shadow: 1px 1px 0 var(--pink-dark);
+      letter-spacing: 2px;
+    }
+    .countdown-timer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .time-box {
+      background: var(--dark);
+      border: 1px solid var(--pink);
+      border-radius: 6px;
+      padding: 10px 12px;
+      min-width: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 2px 2px 0 var(--pink-dark);
+    }
+    .time-val {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--white);
+    }
+    .time-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      color: var(--pink);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+    .time-sep {
+      color: var(--pink);
+      font-size: 1.5rem;
+      font-weight: 800;
+      padding-bottom: 20px;
+    }
+
     /* ── CONFIRM BUTTON ── */
     .btn-confirm {
       margin-top: 18px;
@@ -667,6 +723,33 @@
     <button class="btn-confirm" id="btn-open-modal" aria-label="Confirmar asistencia">
       ¡Confirmar Asistencia!
     </button>
+
+    <!-- Countdown -->
+    <div class="countdown-container">
+      <p class="countdown-title">Faltan:</p>
+      <div class="countdown-timer" id="countdown-timer">
+        <div class="time-box">
+           <span class="time-val" id="cd-days">00</span>
+           <span class="time-label">Días</span>
+        </div>
+        <span class="time-sep">:</span>
+        <div class="time-box">
+           <span class="time-val" id="cd-hours">00</span>
+           <span class="time-label">Hrs</span>
+        </div>
+        <span class="time-sep">:</span>
+        <div class="time-box">
+           <span class="time-val" id="cd-min">00</span>
+           <span class="time-label">Min</span>
+        </div>
+        <span class="time-sep">:</span>
+        <div class="time-box">
+           <span class="time-val" id="cd-sec">00</span>
+           <span class="time-label">Seg</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -899,6 +982,33 @@
       document.body.appendChild(p);
       setTimeout(() => p.remove(), 4500);
     }
+  }
+  /* ─── COUNTDOWN TIMER ─── */
+  const targetDate = new Date('2026-05-01T20:00:00').getTime();
+  
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    
+    if (distance < 0) {
+      document.getElementById('countdown-timer').innerHTML = "<div class='time-val' style='font-size:1.2rem;'>¡Llegó la hora! 🪩</div>";
+      return;
+    }
+    
+    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('cd-days').innerText = d.toString().padStart(2, '0');
+    document.getElementById('cd-hours').innerText = h.toString().padStart(2, '0');
+    document.getElementById('cd-min').innerText = m.toString().padStart(2, '0');
+    document.getElementById('cd-sec').innerText = s.toString().padStart(2, '0');
+  }
+  
+  if (document.getElementById('countdown-timer')) {
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
   }
 </script>
 </body>
