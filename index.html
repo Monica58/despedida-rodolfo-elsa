@@ -923,21 +923,14 @@
       if (TELEGRAM_TOKEN && TELEGRAM_CHAT_ID) {
         const textMsg = `🪩 Nuevo Confirmado!\n\n👤 Nombre: \${name}\n📞 Whats: \${phone || 'N/A'}\n🤝 Acompañante: \${guests === '1' ? companionName : 'Ninguno'}\n💬 Mensaje: \${message || 'N/A'}`;
         const tgUrl = `https://api.telegram.org/bot\${TELEGRAM_TOKEN}/sendMessage`;
+        const tgParams = new URLSearchParams();
+        tgParams.append('chat_id', TELEGRAM_CHAT_ID);
+        tgParams.append('text', textMsg);
+
         fetch(tgUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: textMsg
-          })
-        })
-        .then(res => res.json())
-        .then(respData => {
-            alert('TELEGRAM DEBUG: ' + JSON.stringify(respData));
-        })
-        .catch(err => {
-            alert('TELEGRAM NETWORK ERROR: ' + err.message);
-        });
+          body: tgParams
+        }).catch(err => console.log('Telegram message error logged'));
       }
     } catch(e) { console.error('Error enviando notificaciones', e); }
     
