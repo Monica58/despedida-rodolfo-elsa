@@ -921,15 +921,14 @@
 
       // 2. Telegram Webhook
       if (TELEGRAM_TOKEN && TELEGRAM_CHAT_ID) {
-        const textMsg = `🪩 *Nuevo Confirmado!*\n\n👤 *Nombre:* \${name}\n📞 *Whats:* \${phone || 'N/A'}\n🤝 *Acompañante:* \${guests === '1' ? companionName : 'Ninguno'}\n💬 *Mensaje:* \${message || 'N/A'}`;
+        const textMsg = `🪩 Nuevo Confirmado!\n\n👤 Nombre: \${name}\n📞 Whats: \${phone || 'N/A'}\n🤝 Acompañante: \${guests === '1' ? companionName : 'Ninguno'}\n💬 Mensaje: \${message || 'N/A'}`;
         const tgUrl = `https://api.telegram.org/bot\${TELEGRAM_TOKEN}/sendMessage`;
         fetch(tgUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: TELEGRAM_CHAT_ID,
-            text: textMsg,
-            parse_mode: 'Markdown'
+            text: textMsg
           })
         }).catch(err => console.log('Telegram message error logged'));
       }
